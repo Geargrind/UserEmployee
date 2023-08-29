@@ -25,6 +25,9 @@ public class EmployeeRestController {
         return employeeRepository.findAll();
     }
 
+
+    //usikker kode - ændres så user ikke rettes i user (get user by id før save)
+    // og så der er passende exceptions hvis user ikke findes eller er brugt i forvejen
     @PostMapping("/employee")
     @ResponseStatus(HttpStatus.CREATED)
     public Employee postEmployee(@RequestBody Employee employee){
