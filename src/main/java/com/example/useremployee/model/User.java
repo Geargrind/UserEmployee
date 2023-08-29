@@ -13,7 +13,7 @@ public class User {
 
     @Column(unique = true)
     private String email;
-    @JsonIgnore
+    //@JsonIgnore
     private String password;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
