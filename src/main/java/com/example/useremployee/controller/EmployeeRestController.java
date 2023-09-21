@@ -17,28 +17,27 @@ public class EmployeeRestController {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    @Autowired
-    UserRepository userRepository;
+/*    @Autowired
+    UserRepository userRepository;*/
 
     @GetMapping("/employees")
     public List<Employee> getAllEmployees(){
         return employeeRepository.findAll();
     }
 
-
-    //usikker kode - ændres så user ikke rettes i user (get user by id før save)
-    // og så der er passende exceptions hvis user ikke findes eller er brugt i forvejen
     @PostMapping("/employee")
     @ResponseStatus(HttpStatus.CREATED)
     public Employee postEmployee(@RequestBody Employee employee){
+        employee.setId(0);
         System.out.println(employee);
         return employeeRepository.save(employee);
     }
 
-    @PostMapping("/user")
+    /*@PostMapping("/user")
     @ResponseStatus(HttpStatus.CREATED)
     public User postUser(@RequestBody User user){
+        user.setUserID(0);
         System.out.println(user);
         return userRepository.save(user);
-    }
+    }*/
 }
