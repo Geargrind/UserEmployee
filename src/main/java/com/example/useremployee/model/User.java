@@ -1,7 +1,6 @@
 package com.example.useremployee.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,7 +12,7 @@ public class User {
 
     @Column(unique = true)
     private String email;
-    //@JsonIgnore
+    //@JsonIgnore - skal klares med DTO
     private String password;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
@@ -25,7 +24,6 @@ public class User {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
-
     }
 
     public int getUserID() {

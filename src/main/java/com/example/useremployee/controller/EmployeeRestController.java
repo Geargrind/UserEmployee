@@ -6,10 +6,12 @@ import com.example.useremployee.repository.EmployeeRepository;
 import com.example.useremployee.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Properties;
+import java.util.Optional;
+
 
 @RestController
 public class EmployeeRestController {
@@ -17,8 +19,8 @@ public class EmployeeRestController {
     @Autowired
     EmployeeRepository employeeRepository;
 
-/*    @Autowired
-    UserRepository userRepository;*/
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/employees")
     public List<Employee> getAllEmployees(){
@@ -27,17 +29,18 @@ public class EmployeeRestController {
 
     @PostMapping("/employee")
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee postEmployee(@RequestBody Employee employee){
+    public ResponseEntity<Employee> postEmployee(@RequestBody Employee employee){
+        //sikr at det er INSERT
         employee.setId(0);
-        System.out.println(employee);
-        return employeeRepository.save(employee);
+        //hent bruger på userID til svar
+        Optional<User> userOptional = userRepository.findById(employee.getUser().getUserID());
+        if (userOptional.isPresent()) {
+            employee.setUser(userOptional.get());
+            Employee returEmployee = employeeRepository.save(employee);
+            return new ResponseEntity<>(returEmployee, HttpStatus.CREATED);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    /*@PostMapping("/user")
-    @ResponseStatus(HttpStatus.CREATED)
-    public User postUser(@RequestBody User user){
-        user.setUserID(0);
-        System.out.println(user);
-        return userRepository.save(user);
-    }*/
 }
